@@ -12,15 +12,17 @@ Desktop.ini
 
 # Generated & compiled files
 #
-/build/
-/dist/
-/types/
 /*.tgz
 
-# Downloadable & installable modules & components
+# Files with sensitive data
 #
-/node_modules/
+/.github/
 
-# Not ignored
+# Config files
 #
-!.gitkeep
+/.babelrc
+/.editorconfig
+/.eslintrc.js
+
+/tsconfig.json
+/webpack.config.js

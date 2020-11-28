@@ -1,0 +1,59 @@
+{
+  "name": "@byloth/html-element-style",
+  "version": "1.0.0-rc1",
+  "description": "",
+  "keywords": [],
+  "homepage": "https://github.com/Byloth/html-element-style#readme",
+  "bugs": {
+    "url": "https://github.com/Byloth/html-element-style/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": {
+    "name": "Matteo Bilotta",
+    "email": "me@byloth.net",
+    "url": "https://www.byloth.net/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Byloth/html-element-style.git"
+  },
+  "main": "dist/html-element-style.min.js",
+  "module": "build/index.js",
+  "types": "types/index.d.ts",
+  "scripts": {
+    "build": "yarn build:module && yarn build:types && yarn build:main",
+    "build:main": "yarn clean:main && webpack --mode production",
+    "build:module": "yarn clean:module && tsc --outDir build/ --declaration false",
+    "build:types": "yarn clean:types && tsc --outDir types/ --emitDeclarationOnly",
+    "clean": "yarn clean:main && yarn clean:module && yarn clean:types",
+    "clean:main": "rm -rf dist/*",
+    "clean:module": "rm -rf build/*",
+    "clean:types": "rm -rf types/*",
+    "ci": "yarn install --frozen-lockfile",
+    "lint": "eslint .",
+    "test": "echo \"Sorry! No test specified yet. 😭\" && exit 1",
+    "watch": "yarn build:main --watch"
+  },
+  "dependencies": {
+    "tslib": "^2.0.3"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.7",
+    "@babel/preset-typescript": "^7.12.7",
+    "@types/webpack": "^4.41.25",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
+    "babel-loader": "^8.2.2",
+    "eslint": "^7.14.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^5.0.0",
+    "typescript": "^4.1.2",
+    "uglifyjs-webpack-plugin": "^2.2.0",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^4.2.0"
+  }
+}

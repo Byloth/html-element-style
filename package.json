@@ -31,6 +31,7 @@
     "clean:types": "rm -rf types/*",
     "ci": "yarn install --frozen-lockfile",
     "lint": "eslint .",
+    "lint:prod": "export NODE_ENV='production' && yarn lint",
     "test": "echo \"Sorry! No test specified yet. 😭\" && exit 1",
     "watch": "yarn build:main --watch"
   },

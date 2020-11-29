@@ -1,9 +1,11 @@
 /*
- * Core
+ * HTML Element Style
  */
 
-import { BaseStyle } from "./core";
-export { BaseStyle };
+import HTMLElementStyle, { CSSProperties } from "./html-element-style";
+
+export default HTMLElementStyle;
+export { CSSProperties };
 
 /*
  * Properties
@@ -24,3 +26,10 @@ export { Axes3D, Axes3DValue };
 
 import TransitionValue, { Transition } from "./values/transition";
 export { Transition, TransitionValue };
+
+/*
+ * Core
+ */
+
+import { BaseStyle } from "./core";
+export { BaseStyle };

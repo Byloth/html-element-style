@@ -1,8 +1,8 @@
 name: Publish package on NPM & GPR
 on:
   push:
-    # branches:
-    #   - production
+    branches:
+      - production
 
 jobs:
   build:
@@ -45,38 +45,35 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/setup-node@v1
-      #   with:
-      #     node-version: 15
-      #     registry-url: https://registry.npmjs.org/
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 15
+          registry-url: https://registry.npmjs.org/
 
-      # - run: npm install -g yarn
+      - run: npm install -g yarn
       - uses: actions/download-artifact@v2
         with:
           name: byloth-html-element-style
 
-      - run: ls -lsrta
-      # - run: TODO!
-      # - run: yarn publish
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - run: yarn publish --tag next
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-  # gpr-publish:
-  #   name: Publish on GPR
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/setup-node@v1
-  #       with:
-  #         node-version: 15
-  #         registry-url: https://npm.pkg.github.com/
+  gpr-publish:
+    name: Publish on GPR
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 15
+          registry-url: https://npm.pkg.github.com/
 
-  #     - run: npm install -g yarn
-  #     - uses: actions/download-artifact@v2
-  #       with:
-  #         name: byloth-html-element-style
+      - run: npm install -g yarn
+      - uses: actions/download-artifact@v2
+        with:
+          name: byloth-html-element-style
 
-  #     # - run: TODO!
-  #     - run: yarn publish
-  #       env:
-  #         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: yarn publish --tag next
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

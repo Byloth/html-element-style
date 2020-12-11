@@ -1,8 +1,15 @@
 {
   "name": "@byloth/html-element-style",
   "version": "1.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "A library to easily manage HTMLElement style properties, just like normal properties; no more strings to parse or replace!",
+  "keywords": [
+    "HTMLElement",
+    "DOM",
+    "Style",
+    "Library",
+    "Parser",
+    "Replacer"
+  ],
   "homepage": "https://github.com/Byloth/html-element-style#readme",
   "bugs": {
     "url": "https://github.com/Byloth/html-element-style/issues"

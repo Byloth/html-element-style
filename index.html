@@ -66,48 +66,118 @@
             {
                 "use strict";
 
-                function camelCase(value)
-                {
-                    return value.replace(/-[a-z]/gi, (match) => `${match.toUpperCase().replace("-", "")}`);
-                }
-                function snakeCase(value)
-                {
-                    return value.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
-                }
-
-                window.camelCase = camelCase;
-                window.snakeCase = snakeCase;
-
-                // class HTMLElementStyle extends Proxy
-                // {
-                //     constructor(element)
-                //     {
-                //         super({}, {
-                //             get: (target, property, receiver) =>
-                //             {
-                //                 return target[property];
-                //             },
-                //             set: (target, property, value, receiver) =>
-                //             {
-                //                 if (typeof value === "number")
-                //                 {
-                //                     target[property].value = value;
-                //                 }
-                //                 else if (typeof value === "string")
-                //                 {
-                //                     target[property].string = value;
-                //                 }
-
-                //                 return true;
-                //             }
-                //         });
-
-                //         this._element = element;
-                //     }
-                // }
-
                 const title = document.querySelector("#title");
 
+                function isSnakeCase(value)
+                {
+                    return value.includes("-");
+                }
+                function toCamelCase(value)
+                {
+                    return value.replace(/-[a-z]/gi, (match) => match[1].toUpperCase());
+                }
+
+                function normalizePropertyName(property)
+                {
+                    if (isSnakeCase(property))
+                    {
+                        return toCamelCase(property);
+                    }
+
+                    return property;
+                }
+                function normalizePropertyValue(property, value)
+                {
+                    if ((value === "") || (value === undefined))
+                    {
+                        return null;
+                    }
+
+                    return value;
+                }
+
+                function initializePropertyIfNotExists(target, property, element)
+                {
+                    if (!(property in target))
+                    {
+                        target[property] = new HTMLElementStyleProperty(element, property);
+                    }
+
+                    return target[property];
+                }
+
+                class HTMLElementStyleProperty
+                {
+                    _element = undefined;
+                    _name = undefined;
+
+                    get value()
+                    {
+                        return this._element.style[this._name];
+                    }
+                    set value(value)
+                    {
+                        this._element.style[this._name] = value;
+                    }
+
+                    constructor(element, name)
+                    {
+                        this._element = element;
+                        this._name = name;
+                    }
+
+                    toString()
+                    {
+                        return this.value;
+                    }
+                }
+
+                class HTMLElementStyle
+                {
+                    _element = undefined;
+
+                    constructor(element)
+                    {
+                        this._element = element;
+
+                        return new Proxy({ }, {
+                            get: (target, property, receiver) =>
+                            {
+                                property = normalizePropertyName(property);
+                                initializePropertyIfNotExists(target, property, element);
+
+                                return target[property];
+                            },
+                            set: (target, property, value, receiver) =>
+                            {
+                                property = normalizePropertyName(property);
+                                initializePropertyIfNotExists(target, property, element);
+                                value = normalizePropertyValue(property, value);
+
+                                const type = typeof value;
+
+                                if (type === "number")
+                                {
+                                    value = `${value}px`;
+                                }
+                                else if (type === "string")
+                                {
+                                    value = `${value}`;
+                                }
+                                else if (type === "object")
+                                {
+                                    value = `${value.value}${value.unit}`;
+                                }
+                                
+                                target[property].value = value;
+
+                                return true;
+                            }
+                        });
+                    }
+                }
+
+                window.elementStyle = new HTMLElementStyle(title);
             })();
         </script>
     </body>

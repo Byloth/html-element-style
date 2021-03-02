@@ -1,4 +1,4 @@
-export abstract class BaseStyle<T>
+export abstract class BaseStyle<T = unknown>
 {
     protected _element: HTMLElement;
 
@@ -9,4 +9,7 @@ export abstract class BaseStyle<T>
 
     public abstract get(): T;
     public abstract set(value: T | null): void;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [key: string]: any;
 }

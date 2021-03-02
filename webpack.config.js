@@ -9,7 +9,7 @@ const BANNER = `
 /*!
  * HTML Element Style v${PACKAGE.version} (https://github.com/Byloth/html-element-style.git)
  *
- *  -> Copyright © 2020, Matteo Bilotta
+ *  -> Copyright © 2020 - 2021, Matteo Bilotta
  *  -> Licensed under GPL v3 (https://github.com/Byloth/html-element-style/blob/master/LICENSE)
  */
 `;

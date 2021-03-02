@@ -1,58 +1,83 @@
 import { BaseStyle } from "./core";
 
-import TransformationsProperty, { Transformations } from "./properties/transformations";
-import TransitionsProperty, { Transitions } from "./properties/transitions";
+import TransformationsProperty from "./properties/transformations";
+import TransitionsProperty from "./properties/transitions";
 
-export interface CSSProperties { transform?: Transformations | null; transition?: Transitions | null }
-export default class HTMLElementStyle extends BaseStyle<CSSProperties> implements CSSProperties
+export class ElementStyle extends BaseStyle
 {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    public static readonly AVAILABLE_PROPERTIES: Record<string, new(element: HTMLElement) => any> = {
+    public get(): Record<string, unknown>
+    {
+        throw new Error("Method not implemented.");
+    }
+    public set(value: Record<string, unknown> | null): void
+    {
+        throw new Error("Method not implemented.");
+    }
+}
+
+export default class HTMLElementStyle extends Proxy<ElementStyle>
+{
+    protected static readonly _CUSTOM_PROPERTIES: Record<string, new(element: HTMLElement) => BaseStyle> = {
         "transform": TransformationsProperty,
         "transition": TransitionsProperty
     };
 
-    public readonly transform: TransformationsProperty | null;
-    public readonly transition: TransitionsProperty | null;
+    protected _style: ElementStyle;
 
-    public constructor(element: HTMLElement, enabledProperties: string[] = [])
+    public constructor(element: HTMLElement)
     {
-        super(element);
+        const style = new ElementStyle(element);
 
-        this.transform = null;
-        this.transition = null;
-
-        for (const property of enabledProperties)
+        const enable = (obj: ElementStyle, key: string): void =>
         {
-            this.enable(property);
-        }
+            let Property: new(element: HTMLElement) => BaseStyle;
+
+            if (key in HTMLElementStyle._CUSTOM_PROPERTIES)
+            {
+                Property = HTMLElementStyle._CUSTOM_PROPERTIES[key];
+            }
+            else
+            {
+                // TODO!
+            }
+
+            obj[key] = new Property(element);
+        };
+
+        super(style, {
+            get: (obj: ElementStyle, key: string): unknown =>
+            {
+                if (!(key in obj))
+                {
+                    enable(obj, key);
+                }
+
+                return obj[key];
+            },
+            set: (obj: ElementStyle, key: string, value: unknown): boolean =>
+            {
+                if (!(key in obj))
+                {
+                    enable(obj, key);
+                }
+
+                obj[key] = value;
+
+                return true;
+            }
+        });
+
+        this._style = style;
     }
 
-    public enable(property: string): void
-    {
-        const Property = HTMLElementStyle.AVAILABLE_PROPERTIES[property];
-
-        if (Property)
-        {
-            this[property] = new Property(this._element);
-        }
-        else
-        {
-            throw new Error(`You cannot enable unknown or unsupported "${property}" CSS property.`);
-        }
-    }
-
-    public get(): CSSProperties
+    public get(): Record<string, unknown>
     {
         return { transform: this.transform?.get(), transition: this.transition?.get() };
     }
-    public set(style: CSSProperties): void
+    public set(style: Record<string, unknown> | null): void
     {
         if (style === null) { style = { transform: null, transition: null }; }
         if (style.transform !== undefined) { this.transform?.set(style.transform); }
         if (style.transition !== undefined) { this.transition?.set(style.transition); }
     }
-
-    // eslint-disable-next-line no-undef
-    [key: string]: keyof HTMLElementStyle;
 }

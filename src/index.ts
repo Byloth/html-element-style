@@ -2,10 +2,10 @@
  * HTML Element Style
  */
 
-import HTMLElementStyle, { CSSProperties } from "./html-element-style";
+import HTMLElementStyle, { ElementStyle } from "./html-element-style";
 
 export default HTMLElementStyle;
-export { CSSProperties };
+export { ElementStyle };
 
 /*
  * Properties

@@ -100,13 +100,21 @@
                 {
                     if (!(property in target))
                     {
-                        target[property] = new HTMLElementStyleProperty(element, property);
+                        target[property] = new DimensionProperty(element, property);
                     }
 
                     return target[property];
                 }
 
-                class HTMLElementStyleProperty
+                function parseValue(value)
+                {
+                    const regex = /^([0-9]+(?:\.[0-9]+)?)([cm]m|ch|e[mx]|in|p[ctx]|rem|v[hw]|v(?:max|min)|%)?$/i;
+                    const matches = value.match(regex);
+
+                    return { number: parseFloat(matches[1]), unit: matches[2] };
+                }
+
+                class Property
                 {
                     _element = undefined;
                     _name = undefined;
@@ -131,8 +139,70 @@
                         return this.value;
                     }
                 }
+                class DimensionProperty extends Property
+                {
+                    _number = undefined;
+                    _unit = undefined;
 
-                class HTMLElementStyle
+                    get value()
+                    {
+                        return { number: this._number, unit: this._unit };
+                    }
+                    set value(value)
+                    {
+                        if (value === null)
+                        {
+                            value = { number: null };
+                        }
+
+                        const type = typeof value;
+
+                        if (type === "number")
+                        {
+                            value = { number: value };
+                        }
+                        else if (type === "string")
+                        {
+                            value = parseValue(value);
+                        }
+                        
+                        this._number = value.number;
+                        if (value.unit)
+                        {
+                            this._unit = value.unit;
+                        }
+
+                        if (this._number !== null)
+                        {
+                            this._element.style[this._name] = `${this._number}${this._unit}`;
+                        }
+                        else
+                        {
+                            this._element.style[this._name] = "";
+                        }
+                    }
+
+                    constructor(element, name, unit = "px")
+                    {
+                        super(element, name);
+
+                        this._number = null;
+                        this._unit = unit;
+                    }
+
+                    refresh()
+                    {
+                        const value = parseValue(this._element.style[this._name]);
+                        
+                        this._number = value.number;
+                        if (value.unit)
+                        {
+                            this._unit = value.unit;
+                        }
+                    }
+                }
+
+                class ElementStyle
                 {
                     _element = undefined;
 
@@ -153,21 +223,6 @@
                                 property = normalizePropertyName(property);
                                 initializePropertyIfNotExists(target, property, element);
                                 value = normalizePropertyValue(property, value);
-
-                                const type = typeof value;
-
-                                if (type === "number")
-                                {
-                                    value = `${value}px`;
-                                }
-                                else if (type === "string")
-                                {
-                                    value = `${value}`;
-                                }
-                                else if (type === "object")
-                                {
-                                    value = `${value.value}${value.unit}`;
-                                }
                                 
                                 target[property].value = value;
 
@@ -177,7 +232,7 @@
                     }
                 }
 
-                window.elementStyle = new HTMLElementStyle(title);
+                window.elementStyle = new ElementStyle(title);
             })();
         </script>
     </body>

@@ -68,7 +68,7 @@
 
                 const title = document.querySelector("#title");
 
-                function isSnakeCase(value)
+                function isKebabCase(value)
                 {
                     return value.includes("-");
                 }
@@ -79,7 +79,7 @@
 
                 function normalizePropertyName(property)
                 {
-                    if (isSnakeCase(property))
+                    if (isKebabCase(property))
                     {
                         return toCamelCase(property);
                     }
@@ -100,21 +100,21 @@
                 {
                     if (!(property in target))
                     {
-                        target[property] = new DimensionProperty(element, property);
+                        target[property] = new DimensionStyleProperty(element, property);
                     }
 
                     return target[property];
                 }
 
-                function parseValue(value)
+                function parseProperty(value)
                 {
                     const regex = /^([0-9]+(?:\.[0-9]+)?)([cm]m|ch|e[mx]|in|p[ctx]|rem|v[hw]|v(?:max|min)|%)?$/i;
                     const matches = value.match(regex);
 
-                    return { number: parseFloat(matches[1]), unit: matches[2] };
+                    return { value: parseFloat(matches[1]), unit: matches[2] };
                 }
 
-                class Property
+                class StyleProperty
                 {
                     _element = undefined;
                     _name = undefined;
@@ -123,9 +123,14 @@
                     {
                         return this._element.style[this._name];
                     }
-                    set value(value)
+                    set value(property)
                     {
-                        this._element.style[this._name] = value;
+                        this._element.style[this._name] = property;
+                    }
+
+                    get [Symbol.toStringTag]()
+                    {
+                        return "StyleProperty";
                     }
 
                     constructor(element, name)
@@ -134,47 +139,47 @@
                         this._name = name;
                     }
 
-                    toString()
+                    [Symbol.toPrimitive](hint)
                     {
                         return this.value;
                     }
                 }
-                class DimensionProperty extends Property
+                class DimensionStyleProperty extends StyleProperty
                 {
-                    _number = undefined;
+                    _value = undefined;
                     _unit = undefined;
 
                     get value()
                     {
-                        return { number: this._number, unit: this._unit };
+                        return this._value;
                     }
-                    set value(value)
+                    set value(property)
                     {
-                        if (value === null)
+                        if (property === null)
                         {
-                            value = { number: null };
+                            property = { value: null };
                         }
 
-                        const type = typeof value;
+                        const type = typeof property;
 
                         if (type === "number")
                         {
-                            value = { number: value };
+                            property = { value: property };
                         }
                         else if (type === "string")
                         {
-                            value = parseValue(value);
+                            property = parseProperty(property);
                         }
                         
-                        this._number = value.number;
-                        if (value.unit)
+                        this._value = property.value;
+                        if (property.unit)
                         {
-                            this._unit = value.unit;
+                            this._unit = property.unit;
                         }
 
-                        if (this._number !== null)
+                        if (this._value !== null)
                         {
-                            this._element.style[this._name] = `${this._number}${this._unit}`;
+                            this._element.style[this._name] = `${this._value}${this._unit}`;
                         }
                         else
                         {
@@ -182,47 +187,61 @@
                         }
                     }
 
+                    get [Symbol.toStringTag]()
+                    {
+                        return "DimensionStyleProperty";
+                    }
+
                     constructor(element, name, unit = "px")
                     {
                         super(element, name);
 
-                        this._number = null;
+                        this._value = null;
                         this._unit = unit;
                     }
 
                     refresh()
                     {
-                        const value = parseValue(this._element.style[this._name]);
+                        const property = parseProperty(this._element.style[this._name]);
                         
-                        this._number = value.number;
+                        this._value = property.value;
                         if (value.unit)
                         {
-                            this._unit = value.unit;
+                            this._unit = property.unit;
                         }
+                    }
+
+                    [Symbol.toPrimitive](hint)
+                    {
+                        if (hint === "string") { return `${this._value}${this._unit}`; }
+
+                        return this._value;
                     }
                 }
 
-                class ElementStyle
+                class HTMLElementStyle
                 {
-                    _element = undefined;
-
                     constructor(element)
                     {
-                        this._element = element;
-
-                        return new Proxy({ }, {
+                        return new Proxy(this, {
                             get: (target, property, receiver) =>
                             {
-                                property = normalizePropertyName(property);
-                                initializePropertyIfNotExists(target, property, element);
+                                if (typeof property === "string")
+                                {
+                                    property = normalizePropertyName(property);
+                                    initializePropertyIfNotExists(target, property, element);
+                                }
 
                                 return target[property];
                             },
                             set: (target, property, value, receiver) =>
                             {
-                                property = normalizePropertyName(property);
-                                initializePropertyIfNotExists(target, property, element);
-                                value = normalizePropertyValue(property, value);
+                                if (typeof property === "string")
+                                {
+                                    property = normalizePropertyName(property);
+                                    initializePropertyIfNotExists(target, property, element);
+                                    value = normalizePropertyValue(property, value);
+                                }
                                 
                                 target[property].value = value;
 
@@ -230,9 +249,31 @@
                             }
                         });
                     }
+
+                    get [Symbol.toStringTag]()
+                    {
+                        return "HTMLElementStyle";
+                    }
+
+                    [Symbol.toPrimitive](hint)
+                    {
+                        if (hint === "string")
+                        {
+                            const properties = [];
+
+                            for (const property in this)
+                            {
+                                properties.push(`${property}(${this[property]})`);
+                            }
+
+                            return `HTMLElementStyle[${properties.sort().join(", ")}]`;
+                        }
+
+                        return this;
+                    }
                 }
 
-                window.elementStyle = new ElementStyle(title);
+                window.elementStyle = new HTMLElementStyle(title);
             })();
         </script>
     </body>

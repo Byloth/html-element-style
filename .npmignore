@@ -24,5 +24,4 @@ Desktop.ini
 /.editorconfig
 /.eslintrc.js
 
-/tsconfig.json
 /webpack.config.js

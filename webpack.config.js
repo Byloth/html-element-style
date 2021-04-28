@@ -16,18 +16,18 @@ const BANNER = `
 
 module.exports = {
   entry: {
-    "html-element-style": "./src/index.ts",
-    "html-element-style.min": "./src/index.ts"
+    "html-element-style": PATH.resolve(__dirname, "src/index.js"),
+    "html-element-style.min": PATH.resolve(__dirname, "src/index.js")
   },
   output: {
-    path: PATH.resolve(__dirname, "dist/"),
+    path: PATH.resolve(__dirname, "dist"),
     filename: "[name].js",
     library: "HTMLElementStyle",
     libraryExport: "default",
     libraryTarget: "assign"
   },
   resolve: {
-    extensions: [".js", ".ts"],
+    extensions: [".js"],
     alias: { "@": PATH.resolve("src") }
   },
   devtool: "source-map",
@@ -38,7 +38,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|ts)$/,
+        test: /\.(js)$/,
         exclude: /node_modules/,
         loader: "babel-loader"
       }

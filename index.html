@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-    Docs for HTML Element Style v1.1.0 (or above)
+    Docs for HTML Element Style v2.0.0 (or above)
 
      -> Copyright © 2020 - 2021, Matteo Bilotta
      -> Licensed under GPL v3 (https://github.com/Byloth/vue-scroll-animator/blob/master/LICENSE)
@@ -55,12 +55,12 @@
             <div class="fullscreen">
                 <h1 id="title" style="text-align: center;">
                     HTML Element Style
-                    <sup>v1.1.0</sup>
+                    <sup>v2.0.0</sup>
                 </h1>
             </div>
         </div>
 
-        <!-- <script src="./dist/html-element-style.js"></script> -->
+        <script src="./dist/html-element-style.js"></script>
         <script>
             (function()
             {
@@ -68,212 +68,9 @@
 
                 const title = document.querySelector("#title");
 
-                function isKebabCase(value)
-                {
-                    return value.includes("-");
-                }
-                function toCamelCase(value)
-                {
-                    return value.replace(/-[a-z]/gi, (match) => match[1].toUpperCase());
-                }
+                window.title = title;
+                window.titleStyle = new HTMLElementStyle(title);
 
-                function normalizePropertyName(property)
-                {
-                    if (isKebabCase(property))
-                    {
-                        return toCamelCase(property);
-                    }
-
-                    return property;
-                }
-                function normalizePropertyValue(property, value)
-                {
-                    if ((value === "") || (value === undefined))
-                    {
-                        return null;
-                    }
-
-                    return value;
-                }
-
-                function initializePropertyIfNotExists(target, property, element)
-                {
-                    if (!(property in target))
-                    {
-                        target[property] = new DimensionStyleProperty(element, property);
-                    }
-
-                    return target[property];
-                }
-
-                function parseProperty(value)
-                {
-                    const regex = /^([0-9]+(?:\.[0-9]+)?)([cm]m|ch|e[mx]|in|p[ctx]|rem|v[hw]|v(?:max|min)|%)?$/i;
-                    const matches = value.match(regex);
-
-                    return { value: parseFloat(matches[1]), unit: matches[2] };
-                }
-
-                class StyleProperty
-                {
-                    _element = undefined;
-                    _name = undefined;
-
-                    get value()
-                    {
-                        return this._element.style[this._name];
-                    }
-                    set value(property)
-                    {
-                        this._element.style[this._name] = property;
-                    }
-
-                    get [Symbol.toStringTag]()
-                    {
-                        return "StyleProperty";
-                    }
-
-                    constructor(element, name)
-                    {
-                        this._element = element;
-                        this._name = name;
-                    }
-
-                    [Symbol.toPrimitive](hint)
-                    {
-                        return this.value;
-                    }
-                }
-                class DimensionStyleProperty extends StyleProperty
-                {
-                    _value = undefined;
-                    _unit = undefined;
-
-                    get value()
-                    {
-                        return this._value;
-                    }
-                    set value(property)
-                    {
-                        if (property === null)
-                        {
-                            property = { value: null };
-                        }
-
-                        const type = typeof property;
-
-                        if (type === "number")
-                        {
-                            property = { value: property };
-                        }
-                        else if (type === "string")
-                        {
-                            property = parseProperty(property);
-                        }
-                        
-                        this._value = property.value;
-                        if (property.unit)
-                        {
-                            this._unit = property.unit;
-                        }
-
-                        if (this._value !== null)
-                        {
-                            this._element.style[this._name] = `${this._value}${this._unit}`;
-                        }
-                        else
-                        {
-                            this._element.style[this._name] = "";
-                        }
-                    }
-
-                    get [Symbol.toStringTag]()
-                    {
-                        return "DimensionStyleProperty";
-                    }
-
-                    constructor(element, name, unit = "px")
-                    {
-                        super(element, name);
-
-                        this._value = null;
-                        this._unit = unit;
-                    }
-
-                    refresh()
-                    {
-                        const property = parseProperty(this._element.style[this._name]);
-                        
-                        this._value = property.value;
-                        if (value.unit)
-                        {
-                            this._unit = property.unit;
-                        }
-                    }
-
-                    [Symbol.toPrimitive](hint)
-                    {
-                        if (hint === "string") { return `${this._value}${this._unit}`; }
-
-                        return this._value;
-                    }
-                }
-
-                class HTMLElementStyle
-                {
-                    constructor(element)
-                    {
-                        return new Proxy(this, {
-                            get: (target, property, receiver) =>
-                            {
-                                if (typeof property === "string")
-                                {
-                                    property = normalizePropertyName(property);
-                                    initializePropertyIfNotExists(target, property, element);
-                                }
-
-                                return target[property];
-                            },
-                            set: (target, property, value, receiver) =>
-                            {
-                                if (typeof property === "string")
-                                {
-                                    property = normalizePropertyName(property);
-                                    initializePropertyIfNotExists(target, property, element);
-                                    value = normalizePropertyValue(property, value);
-                                }
-                                
-                                target[property].value = value;
-
-                                return true;
-                            }
-                        });
-                    }
-
-                    get [Symbol.toStringTag]()
-                    {
-                        return "HTMLElementStyle";
-                    }
-
-                    [Symbol.toPrimitive](hint)
-                    {
-                        if (hint === "string")
-                        {
-                            const properties = [];
-
-                            for (const property in this)
-                            {
-                                properties.push(`${property}(${this[property]})`);
-                            }
-
-                            return `HTMLElementStyle[${properties.sort().join(", ")}]`;
-                        }
-
-                        return this;
-                    }
-                }
-
-                window.elementStyle = new HTMLElementStyle(title);
             })();
         </script>
     </body>

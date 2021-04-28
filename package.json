@@ -1,6 +1,6 @@
 {
   "name": "@byloth/html-element-style",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A library to easily manage HTMLElement style properties, just like normal properties; no more strings to parse or replace!",
   "keywords": [
     "HTMLElement",
@@ -25,41 +25,29 @@
     "url": "git+https://github.com/Byloth/html-element-style.git"
   },
   "main": "dist/html-element-style.min.js",
-  "module": "build/index.js",
+  "module": "src/index.js",
   "types": "types/index.d.ts",
   "scripts": {
-    "build": "yarn build:module && yarn build:types && yarn build:main",
-    "build:main": "yarn clean:main && webpack --mode production",
-    "build:module": "yarn clean:module && tsc --outDir build/ --declaration false",
-    "build:types": "yarn clean:types && tsc --outDir types/ --emitDeclarationOnly",
-    "clean": "yarn clean:main && yarn clean:module && yarn clean:types",
-    "clean:main": "rm -rf dist/*",
-    "clean:module": "rm -rf build/*",
-    "clean:types": "rm -rf types/*",
+    "build": "yarn clean && webpack --mode production",
+    "clean": "rm -rf dist/*",
     "ci": "yarn install --frozen-lockfile",
     "lint": "eslint .",
     "lint:prod": "export NODE_ENV='production' && yarn lint",
     "test": "echo \"Sorry! No test specified yet. 😭\" && exit 1",
-    "watch": "yarn build:main --watch"
+    "watch": "yarn build --watch"
   },
-  "dependencies": {
-    "tslib": "^2.2.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.13.16",
+    "@babel/eslint-parser": "^7.13.14",
     "@babel/plugin-proposal-class-properties": "^7.13.0",
     "@babel/preset-env": "^7.13.15",
-    "@babel/preset-typescript": "^7.13.0",
-    "@types/webpack": "~4.41.27",
-    "@typescript-eslint/eslint-plugin": "^4.22.0",
-    "@typescript-eslint/parser": "^4.22.0",
     "babel-loader": "^8.2.2",
     "eslint": "^7.25.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-standard": "^5.0.0",
-    "typescript": "^4.2.4",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "~4.46.0",
     "webpack-cli": "^4.6.0"

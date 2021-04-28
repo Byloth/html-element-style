@@ -6,13 +6,12 @@ module.exports = {
     browser: true,
     node: true
   },
-
-  extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
-  parserOptions: { ecmaVersion: 2020 },
+  extends: ["eslint:recommended"],
+  parser: "@babel/eslint-parser",
+  parserOptions: {
+    ecmaVersion: 2021,
+    sourceType: "module"
+  },
   rules: {
     "arrow-parens": ["error", "always"],
     "brace-style": ["error", "allman", { allowSingleLine: true }],
@@ -30,40 +29,20 @@ module.exports = {
     "quote-props": ["error", "consistent"],
     "quotes": ["error", "double", { allowTemplateLiterals: true, avoidEscape: true }],
     "semi": ["error", "always"],
-    "space-before-function-paren": ["error", { anonymous: "never", named: "never", asyncArrow: "always" }],
-
-    "@typescript-eslint/no-non-null-assertion": "off",
-    "@typescript-eslint/no-unused-vars": [DYNAMIC_LEVEL, { args: "none" }],
-    "@typescript-eslint/semi": ["error"]
+    "space-before-function-paren": ["error", { anonymous: "never", named: "never", asyncArrow: "always" }]
   },
   overrides: [
     {
       files: [".eslintrc.js", "*.config.js"],
-      rules: {
-        "indent": ["error", 2, { SwitchCase: 1 }],
-
-        "@typescript-eslint/no-var-requires": "off"
-      }
+      rules: { "indent": ["error", 2, { SwitchCase: 1 }] }
     },
     {
       files: ["*.json"],
       rules: {
         "indent": ["error", 2],
-        "semi": ["error", "never"],
-        "@typescript-eslint/semi": ["error", "never"]
-      }
-    },
-    {
-      files: ["*.ts"],
-      rules: {
-        "no-unused-vars": "off",
-        "semi": "off"
+        "semi": ["error", "never"]
       }
     }
   ],
-  ignorePatterns: [
-    "build/*",
-    "dist/*",
-    "types/*"
-  ]
+  ignorePatterns: ["dist/*"]
 };

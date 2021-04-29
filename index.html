@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!--
+    Docs for HTML Element Style v2.0.0 (or above)
+
+     -> Copyright © 2020 - 2021, Matteo Bilotta
+     -> Licensed under GPL v3 (https://github.com/Byloth/vue-scroll-animator/blob/master/LICENSE)
+-->
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+        <link rel="stylesheet" type="text/css" href="/assets/style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Docs @ HTML Element Style</title>
+    </head>
+    <body>
+        <div id="app">
+            <div class="fullscreen">
+                <h1 id="title" style="text-align: center;">
+                    HTML Element Style
+                    <sup>v2.0.0</sup>
+                </h1>
+            </div>
+        </div>
+        <script type="module">
+            import HTMLElementStyle from "/src/index.js";
+
+            const title = document.querySelector("#title");
+
+            window.title = title;
+            window.titleStyle = new HTMLElementStyle(title);
+        </script>
+    </body>
+</html>

@@ -61,7 +61,7 @@ export default class HTMLElementStyle
                     initializePropertyIfNotExists(target, property, element);
                     value = normalizePropertyValue(property, value);
                 }
-                
+
                 target[property].value = value;
 
                 return true;

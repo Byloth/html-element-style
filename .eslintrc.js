@@ -25,6 +25,7 @@ module.exports = {
     "no-multi-spaces": ["error", { exceptions: { "Property": false } }],
     "no-multiple-empty-lines": ["error", { max: 1 }],
     "no-unreachable": DYNAMIC_LEVEL,
+    "no-trailing-spaces": "error",
     "no-unused-vars": [DYNAMIC_LEVEL, { args: "none" }],
     "object-shorthand": ["error", "consistent"],
     "quote-props": ["error", "consistent"],

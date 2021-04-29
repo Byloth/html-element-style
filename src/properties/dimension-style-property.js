@@ -56,7 +56,7 @@ export default class DimensionStyleProperty extends StyleProperty
         {
             property = parseProperty(property);
         }
-        
+
         this._value = property.value;
         if (property.unit)
         {
@@ -89,7 +89,7 @@ export default class DimensionStyleProperty extends StyleProperty
     refresh()
     {
         const property = parseProperty(this._element.style[this._name]);
-        
+
         this._value = property.value;
         if (property.unit)
         {

@@ -3,6 +3,4 @@
  * https://jestjs.io/docs/en/configuration.html
  */
 
-module.exports = {
-  moduleNameMapper: { "^@/(.*)$": "<rootDir>/src/$1" }
-};
+module.exports = { moduleNameMapper: { "^@/(.*)$": "<rootDir>/src/$1" } };

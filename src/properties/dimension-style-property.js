@@ -8,6 +8,28 @@ function parseProperty(value)
     return { value: parseFloat(matches[1]), unit: matches[2] };
 }
 
+// top
+// bottom
+// right
+// left
+
+// width
+// height
+// maxWidth
+// maxHeight
+// minWidth
+// minHeight
+
+// marginTop
+// marginBottom
+// marginRight
+// marginLeft
+
+// paddingTop
+// paddingBottom
+// paddingRight
+// paddingLeft
+
 export default class DimensionStyleProperty extends StyleProperty
 {
     _value = undefined;

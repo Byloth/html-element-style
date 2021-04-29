@@ -1,12 +1,52 @@
 {
   "name": "@byloth/html-element-style",
   "version": "2.0.0",
+  "description": "A library to easily manage HTMLElement style properties, just like normal properties; no more strings to parse or replace!",
+  "keywords": [
+    "HTMLElement",
+    "DOM",
+    "Style",
+    "Library",
+    "Parser",
+    "Replacer"
+  ],
+  "homepage": "https://github.com/Byloth/html-element-style#readme",
+  "bugs": {
+    "url": "https://github.com/Byloth/html-element-style/issues"
+  },
+  "license": "GPL-3.0-or-later",
+  "author": {
+    "name": "Matteo Bilotta",
+    "email": "me@byloth.net",
+    "url": "https://www.byloth.net/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Byloth/html-element-style.git"
+  },
+  "files": ["dist"],
+  "main": "./dist/html-element-style.umd.js",
+  "module": "./dist/html-element-style.es.js",
+  "exports": {
+    ".": {
+      "import": "./dist/html-element-style.es.js",
+      "require": "./dist/html-element-style.umd.js"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "ci": "yarn install --frozen-lockfile",
+    "lint": "eslint --ignore-path .gitignore .",
+    "lint:prod": "export NODE_ENV='production' && yarn lint",
+    "test": "echo \"Sorry! No test specified yet. 😭\" && exit 1"
   },
   "devDependencies": {
+    "@babel/core": "^7.13.16",
+    "@babel/eslint-parser": "^7.13.14",
+    "@babel/plugin-proposal-class-properties": "^7.13.0",
+    "@babel/preset-env": "^7.13.15",
+    "eslint": "^7.25.0",
     "vite": "^2.2.3"
   }
 }

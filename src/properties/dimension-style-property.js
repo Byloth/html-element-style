@@ -91,7 +91,7 @@ export default class DimensionStyleProperty extends StyleProperty
         const property = parseProperty(this._element.style[this._name]);
         
         this._value = property.value;
-        if (value.unit)
+        if (property.unit)
         {
             this._unit = property.unit;
         }

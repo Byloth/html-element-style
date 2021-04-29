@@ -1,10 +1,11 @@
-const PATH = require('path')
+const PATH = require("path");
 
 module.exports = {
   build: {
     lib: {
-      entry: PATH.resolve(__dirname, 'src/index.js'),
-      name: 'HTMLElementStyle'
-    }
+      entry: PATH.resolve(__dirname, "src/index.js"),
+      name: "HTMLElementStyle"
+    },
+    sourcemap: true
   }
-}
+};

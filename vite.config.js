@@ -7,5 +7,6 @@ module.exports = {
       name: "HTMLElementStyle"
     },
     sourcemap: true
-  }
+  },
+  resolve: { alias: { "@": PATH.resolve(__dirname, "src") } }
 };

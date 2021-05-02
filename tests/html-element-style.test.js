@@ -26,17 +26,90 @@ describe("Property assignment:", () =>
 
     test.todo("Fail on invalid shorthand operation..."); // style.left *= "bar";
 
-    test.todo("Valid string assignment..."); // style.left = "50%";
-    test.todo("Valid number assignment..."); // style.left = 33.333;
-    test.todo("Valid partial 'value' object assignment..."); // style.left = { value: 50 };
-    test.todo("Valid partial 'unit' object assignment..."); // style.left = { unit: "in" };
-    test.todo("Valid complete object assignment..."); // style.left = { value: 100, unit: "vw" };
-    test.todo("Valid unit assignment..."); // style.left.unit = "vh";
-    test.todo("Valid value assignment..."); // style.left.value = 250;
-    test.todo("Valid string reassignment..."); // style.left = "50rem";
+    describe("Valid assignment:", () =>
+    {
+        test("`string` assignment...", () =>
+        {
+            style["left"] = "50%";
 
-    test.todo("Valid shorthand operation..."); // style.left *= 3;
-    test.todo("Valid decrementation..."); // - style.left--;
+            expect(`${style.left}`).toBe("50%");
+        });
+        test("`number` re-assignment...", () =>
+        {
+            style.left = 33.333;
+            
+            expect(`${style["left"]}`).toBe("33.333%");
+        });
+        test("Partial 'value' object assignment...", () =>
+        {
+            style["left"] = { value: 25 };
+            
+            expect(`${style.left}`).toBe("25%");
+        });
+        test("Partial 'unit' object assignment...", () =>
+        {
+            style.left = { unit: "in" };
+            
+            expect(`${style["left"]}`).toBe("25in");
+        });
+        test("Complete object assignment...", () =>
+        {
+            style["left"] = { value: 100, unit: "vw" };
+            
+            expect(`${style.left}`).toBe("100vw");
+        });
+        test("`number` assignment...", () =>
+        {
+            style.paddingRight = 100;
+            
+            expect(`${style["padding-right"]}`).toBe("100px");
+        });
+        test("'unit' property assignment...", () =>
+        {
+            style["padding-right"].unit = "vh";
+            
+            expect(`${style.paddingRight}`).toBe("100vh");
+        });
+        test("'value' property assignment...", () =>
+        {
+            style.paddingRight.value = 75;
+            
+            expect(`${style["padding-right"]}`).toBe("75vh");
+        });
+        test("String re-assignment...", () =>
+        {
+            style["padding-right"] = "10rem";
+            
+            expect(`${style.paddingRight}`).toBe("10rem");
+        });
+        test("Shorthand operation...", () =>
+        {
+            style.paddingRight *= 4;
+            
+            expect(`${style["padding-right"]}`).toBe("40rem");
+        });
+
+        test("Incrementation on 'value' property...", () =>
+        {
+            style["padding-right"].value++;
+ 
+            expect(`${style.paddingRight}`).toBe("41rem");
+        });
+
+        test("Decrementation...", () =>
+        {
+            style.paddingRight--;
+ 
+            expect(`${style["padding-right"]}`).toBe("40rem");
+        });
+    
+        test("Shorthand operation on 'value' property...", () =>
+        {
+            style["padding-right"].value /= 2;
+     
+            expect(`${style.paddingRight}`).toBe("20rem");
+        });
+    });
 });
 describe("Value representation:", () =>
 {

@@ -57,20 +57,27 @@ export default class DimensionStyleProperty extends StyleProperty
             property = parseProperty(property);
         }
 
-        this._value = property.value;
+        if (property.value)
+        {
+            this._value = property.value;
+        }
         if (property.unit)
         {
             this._unit = property.unit;
         }
 
-        if (this._value !== null)
-        {
-            this._element.style[this._name] = `${this._value}${this._unit}`;
-        }
-        else
-        {
-            this._element.style[this._name] = "";
-        }
+        this._setStyle();
+    }
+
+    get unit()
+    {
+        return this._unit;
+    }
+    set unit(value)
+    {
+        this._unit = value;
+
+        this._setStyle();
     }
 
     get [Symbol.toStringTag]()
@@ -84,6 +91,18 @@ export default class DimensionStyleProperty extends StyleProperty
 
         this._value = null;
         this._unit = unit;
+    }
+
+    _setStyle()
+    {
+        if (this._value !== null)
+        {
+            this._element.style[this._name] = `${this._value}${this._unit}`;
+        }
+        else
+        {
+            this._element.style[this._name] = "";
+        }
     }
 
     refresh()

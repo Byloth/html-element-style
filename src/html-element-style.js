@@ -1,3 +1,7 @@
+import { InvalidPropertyException } from "./exceptions";
+
+import PROPERTIES from "./properties/constants";
+import StyleProperty from "./properties/default";
 import { DimensionStyleProperty } from "./properties";
 
 function isKebabCase(value)
@@ -28,11 +32,32 @@ function normalizePropertyValue(property, value)
     return value;
 }
 
+function getStylePropertyInitializer(property, element)
+{
+    if (!(property in element.style))
+    {
+        throw new InvalidPropertyException(`The CSS property named "${property}" doesn't exists.`);
+    }
+
+    if (PROPERTIES.DIMENSIONS.includes(property))
+    {
+        return DimensionStyleProperty;
+    }
+    else
+    {
+        // eslint-disable-next-line no-console
+        console.warn(`The CSS property named "${property}" doesn't have a initializer specified. Falling back on the default one...`);
+
+        return StyleProperty;
+    }
+}
 function initializePropertyIfNotExists(target, property, element)
 {
     if (!(property in target))
     {
-        target[property] = new DimensionStyleProperty(element, property);
+        const StylePropertyInitializer = getStylePropertyInitializer(property, element);
+
+        target[property] = new StylePropertyInitializer(element, property);
     }
 
     return target[property];

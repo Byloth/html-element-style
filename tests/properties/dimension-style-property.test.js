@@ -1,3 +1,5 @@
+/* eslint-disable dot-notation */
+
 import HTMLElementStyle from "@/html-element-style";
 
 const body = document.body;

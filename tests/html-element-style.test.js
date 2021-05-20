@@ -1,3 +1,5 @@
+/* eslint-disable dot-notation */
+
 import { InvalidPropertyException } from "@/exceptions";
 
 import HTMLElementStyle from "@/html-element-style";

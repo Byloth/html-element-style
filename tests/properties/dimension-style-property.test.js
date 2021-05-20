@@ -14,6 +14,8 @@ describe("Property assignment:", () =>
 {
     describe("Invalid assignment:", () =>
     {
+        test.todo("Fail on NaN assignment..."); // style.left = NaN;
+        test.todo("Fail on Infinity assignment..."); // style.left = NaN;
         test.todo("Fail on invalid string assignment..."); // style.left = "bar";
         test.todo("Fail on invalid object assignment..."); // style.left = { foo: "bar" };
         test.todo("Fail on invalid 'value' object assignment..."); // style.left = { value: "123px" };
@@ -105,7 +107,14 @@ describe("Property assignment:", () =>
 
             expect(`${style.paddingRight}`).toBe("20rem");
         });
+
+        test.todo("Unit assignment..."); // style.height.unit = "vmax"; // -> "0vmax"
     });
+});
+describe("Value parsing:", () =>
+{
+    test.todo("Valid string..."); // DimensionStyleProperty.ParseProperty("10px");
+    test.todo("Invalid string..."); // DimensionStyleProperty.ParseProperty("10rip");
 });
 describe("Value representation:", () =>
 {

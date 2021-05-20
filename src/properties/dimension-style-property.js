@@ -1,15 +1,15 @@
 import StyleProperty from "./default";
 
-function parseProperty(value)
-{
-    const regex = /^([0-9]+(?:\.[0-9]+)?)([cm]m|ch|e[mx]|in|p[ctx]|rem|v[hw]|v(?:max|min)|%)?$/i;
-    const matches = value.match(regex);
-
-    return { value: parseFloat(matches[1]), unit: matches[2] };
-}
-
 export default class DimensionStyleProperty extends StyleProperty
 {
+    static ParseProperty(value)
+    {
+        const regex = /^([0-9]+(?:\.[0-9]+)?)([cm]m|ch|e[mx]|in|p[ctx]|rem|v[hw]|v(?:max|min)|%)?$/i;
+        const matches = value.match(regex);
+
+        return { value: parseFloat(matches[1]), unit: matches[2] };
+    }
+
     _value = undefined;
     _unit = undefined;
 
@@ -32,7 +32,7 @@ export default class DimensionStyleProperty extends StyleProperty
         }
         else if (type === "string")
         {
-            property = parseProperty(property);
+            property = DimensionStyleProperty.ParseProperty(property);
         }
 
         if (property.value)
@@ -85,7 +85,7 @@ export default class DimensionStyleProperty extends StyleProperty
 
     refresh()
     {
-        const property = parseProperty(this._element.style[this._name]);
+        const property = DimensionStyleProperty.ParseProperty(this._element.style[this._name]);
 
         this._value = property.value;
         if (property.unit)

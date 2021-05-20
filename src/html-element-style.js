@@ -1,6 +1,7 @@
-import { InvalidPropertyException } from "./exceptions";
+import { PropertyException } from "./exceptions";
 
-import PROPERTIES from "./properties/constants";
+import { PROPERTIES } from "./properties/constants";
+
 import StyleProperty from "./properties/default";
 import { DimensionStyleProperty } from "./properties";
 
@@ -32,32 +33,30 @@ function normalizePropertyValue(property, value)
     return value;
 }
 
-function getStylePropertyInitializer(property, element)
+function initializeStyleProperty(property, element)
 {
     if (!(property in element.style))
     {
-        throw new InvalidPropertyException(`The CSS property named "${property}" doesn't exists.`);
+        throw new PropertyException(`The CSS property named "${property}" doesn't exists.`);
     }
 
-    if (PROPERTIES.DIMENSIONS.includes(property))
+    if (property in PROPERTIES)
     {
-        return DimensionStyleProperty;
+        return PROPERTIES[property](element, property);
     }
     else
     {
         // eslint-disable-next-line no-console
         console.warn(`The CSS property named "${property}" doesn't have a initializer specified. Falling back on the default one...`);
 
-        return StyleProperty;
+        return StyleProperty(element, property);
     }
 }
 function initializePropertyIfNotExists(target, property, element)
 {
     if (!(property in target))
     {
-        const StylePropertyInitializer = getStylePropertyInitializer(property, element);
-
-        target[property] = new StylePropertyInitializer(element, property);
+        target[property] = initializeStyleProperty(property, element);
     }
 
     return target[property];

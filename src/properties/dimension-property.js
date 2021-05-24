@@ -1,6 +1,6 @@
-import StyleProperty from "./default";
+import StringProperty from "./string-property";
 
-export default class DimensionStyleProperty extends StyleProperty
+export default class DimensionProperty extends StringProperty
 {
     static ParseProperty(value)
     {
@@ -32,7 +32,7 @@ export default class DimensionStyleProperty extends StyleProperty
         }
         else if (type === "string")
         {
-            property = DimensionStyleProperty.ParseProperty(property);
+            property = DimensionProperty.ParseProperty(property);
         }
 
         if (property.value)
@@ -60,10 +60,10 @@ export default class DimensionStyleProperty extends StyleProperty
 
     get [Symbol.toStringTag]()
     {
-        return "DimensionStyleProperty";
+        return "DimensionProperty";
     }
 
-    constructor(element, name, unit = "px")
+    constructor(element, name, unit = "px", options = undefined)
     {
         super(element, name);
 
@@ -85,7 +85,7 @@ export default class DimensionStyleProperty extends StyleProperty
 
     refresh()
     {
-        const property = DimensionStyleProperty.ParseProperty(this._element.style[this._name]);
+        const property = DimensionProperty.ParseProperty(this._element.style[this._name]);
 
         this._value = property.value;
         if (property.unit)

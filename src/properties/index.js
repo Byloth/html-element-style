@@ -1,4 +1,5 @@
-import DimensionStyleProperty from "./dimension-style-property";
-import IntegerStyleProperty from "./integer-style-property";
+import DimensionProperty from "./dimension-property";
+import IntegerProperty from "./integer-property";
+import StringProperty from "./string-property";
 
-export { DimensionStyleProperty, IntegerStyleProperty };
+export { DimensionProperty, IntegerProperty, StringProperty };

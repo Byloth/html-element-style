@@ -1,8 +1,8 @@
 import { TypeException, ValueException } from "@/exceptions";
 
-import StyleProperty from "./default";
+import StringProperty from "./string-property";
 
-export default class IntegerStyleProperty extends StyleProperty
+export default class IntegerProperty extends StringProperty
 {
     _value = undefined;
 
@@ -46,10 +46,10 @@ export default class IntegerStyleProperty extends StyleProperty
 
     get [Symbol.toStringTag]()
     {
-        return "IntegerStyleProperty";
+        return "IntegerProperty";
     }
 
-    constructor(element, name)
+    constructor(element, name, options = undefined)
     {
         super(element, name);
 

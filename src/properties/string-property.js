@@ -1,4 +1,4 @@
-export default class StyleProperty
+export default class StringProperty
 {
     _element = undefined;
     _name = undefined;
@@ -14,10 +14,10 @@ export default class StyleProperty
 
     get [Symbol.toStringTag]()
     {
-        return "StyleProperty";
+        return "StringProperty";
     }
 
-    constructor(element, name)
+    constructor(element, name, options = undefined)
     {
         this._element = element;
         this._name = name;

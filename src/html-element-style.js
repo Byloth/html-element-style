@@ -1,78 +1,86 @@
 import { PropertyException } from "./exceptions";
 
+import { StringProperty } from "./properties";
 import { PROPERTIES } from "./properties/constants";
-
-import StyleProperty from "./properties/default";
-import { DimensionStyleProperty } from "./properties";
-
-function isKebabCase(value)
-{
-    return value.includes("-");
-}
-function toCamelCase(value)
-{
-    return value.replace(/-[a-z]/gi, (match) => match[1].toUpperCase());
-}
-
-function normalizePropertyName(property)
-{
-    if (isKebabCase(property))
-    {
-        return toCamelCase(property);
-    }
-
-    return property;
-}
-function normalizePropertyValue(property, value)
-{
-    if ((value === "") || (value === undefined))
-    {
-        return null;
-    }
-
-    return value;
-}
-
-function initializeStyleProperty(property, element)
-{
-    if (!(property in element.style))
-    {
-        throw new PropertyException(`The CSS property named "${property}" doesn't exists.`);
-    }
-
-    if (property in PROPERTIES)
-    {
-        return PROPERTIES[property](element, property);
-    }
-    else
-    {
-        // eslint-disable-next-line no-console
-        console.warn(`The CSS property named "${property}" doesn't have a initializer specified. Falling back on the default one...`);
-
-        return StyleProperty(element, property);
-    }
-}
-function initializePropertyIfNotExists(target, property, element)
-{
-    if (!(property in target))
-    {
-        target[property] = initializeStyleProperty(property, element);
-    }
-
-    return target[property];
-}
 
 export default class HTMLElementStyle
 {
-    constructor(element)
+    static DEFAULT_OPTS = { typeCheck: true };
+
+    static IsKebabCase(value)
     {
+        return value.includes("-");
+    }
+    static ToCamelCase(value)
+    {
+        return value.replace(/-[a-z]/gi, (match) => match[1].toUpperCase());
+    }
+
+    static NormalizePropertyName(property)
+    {
+        if (HTMLElementStyle.IsKebabCase(property))
+        {
+            return HTMLElementStyle.ToCamelCase(property);
+        }
+
+        return property;
+    }
+    static NormalizePropertyValue(property, value)
+    {
+        if ((value === "") || (value === undefined))
+        {
+            return null;
+        }
+
+        return value;
+    }
+
+    static InitializeProperty(property, element, options = undefined)
+    {
+        if (!(property in element.style))
+        {
+            throw new PropertyException(`The CSS property named "${property}" doesn't exists.`);
+        }
+
+        if (property in PROPERTIES)
+        {
+            return PROPERTIES[property](element, property, options);
+        }
+        else
+        {
+            // eslint-disable-next-line no-console
+            console.warn(`The CSS property named "${property}" doesn't have a initializer specified. Falling back on the default one...`);
+
+            return StringProperty(element, property, options);
+        }
+    }
+    static GetPropertyReady(instance, property, element, options = undefined)
+    {
+        if (!(property in instance))
+        {
+            instance[property] = HTMLElementStyle.InitializeProperty(property, element, options);
+        }
+
+        return instance[property];
+    }
+
+    get [Symbol.toStringTag]()
+    {
+        return "HTMLElementStyle";
+    }
+
+    constructor(element, options = undefined)
+    {
+        options = { ...HTMLElementStyle.DEFAULT_OPTS, ...options };
+
         return new Proxy(this, {
             get: (target, property, receiver) =>
             {
                 if (typeof property === "string")
                 {
-                    property = normalizePropertyName(property);
-                    initializePropertyIfNotExists(target, property, element);
+                    property = HTMLElementStyle.NormalizePropertyName(property);
+
+                    HTMLElementStyle.GetPropertyReady(target, property, element, options);
                 }
 
                 return target[property];
@@ -81,9 +89,10 @@ export default class HTMLElementStyle
             {
                 if (typeof property === "string")
                 {
-                    property = normalizePropertyName(property);
-                    initializePropertyIfNotExists(target, property, element);
-                    value = normalizePropertyValue(property, value);
+                    property = HTMLElementStyle.NormalizePropertyName(property);
+                    value = HTMLElementStyle.NormalizePropertyValue(property, value);
+
+                    HTMLElementStyle.GetPropertyReady(target, property, element, options);
                 }
 
                 target[property].value = value;
@@ -91,11 +100,6 @@ export default class HTMLElementStyle
                 return true;
             }
         });
-    }
-
-    get [Symbol.toStringTag]()
-    {
-        return "HTMLElementStyle";
     }
 
     [Symbol.toPrimitive](hint)

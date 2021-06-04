@@ -30,6 +30,7 @@ describe("Property assignment:", () =>
     });
     describe("Valid assignment:", () =>
     {
+        
         test("`string` assignment...", () =>
         {
             style["left"] = "50%";

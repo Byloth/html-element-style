@@ -6,38 +6,17 @@ export default class IntegerProperty extends StringProperty
 {
     _value = undefined;
 
+    _checkType = (value) => value;
+    _checkValue = (value) => value;
+
     get value()
     {
         return this._value;
     }
     set value(integer)
     {
-        if (integer === null)
-        {
-            integer = 0;
-        }
-
-        const type = typeof integer;
-
-        if (type === "number")
-        {
-            integer = Math.trunc(integer);
-        }
-        else if (type === "string")
-        {
-            integer = parseInt(integer);
-        }
-        else
-        {
-            throw new TypeException("The type of the value you're trying to assign is invalid. " +
-                                    `It should be a valid "number" or, at least, a parsable "string".`);
-        }
-
-        if (!isFinite(integer) || isNaN(integer))
-        {
-            throw new ValueException(`The value "${integer}" you're trying to assign is invalid. ` +
-                                     `It should be a valid "number" or, at least, a parsable "string".`);
-        }
+        integer = this._checkType(integer);
+        integer = this._checkValue(integer);
 
         this._value = integer;
 
@@ -52,6 +31,43 @@ export default class IntegerProperty extends StringProperty
     constructor(element, name, options = undefined)
     {
         super(element, name);
+
+        if (options?.typeCheck)
+        {
+            this._checkType = (value) =>
+            {
+                const type = typeof value;
+
+                if (type === "number")
+                {
+                    value = Math.trunc(value);
+                }
+                else if (type === "string")
+                {
+                    value = parseInt(value);
+                }
+                else
+                {
+                    throw new TypeException("The type of the value you're trying to assign is invalid. " +
+                                            `It should be a valid "number" or, at least, a parsable "string".`);
+                }
+
+                return value;
+            };
+        }
+        if (options?.valueCheck)
+        {
+            this._checkValue = (value) =>
+            {
+                if (!isFinite(value) || isNaN(value))
+                {
+                    throw new ValueException(`The value "${value}" you're trying to assign is invalid. ` +
+                                             `It should be a valid "number" or, at least, a parsable "string".`);
+                }
+
+                return value;
+            };
+        }
 
         this._value = null;
     }

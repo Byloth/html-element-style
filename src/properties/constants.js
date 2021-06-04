@@ -23,3 +23,17 @@ export const PROPERTIES = {
     "width": (element, name, options = undefined) => new DimensionProperty(element, name, undefined, options),
     "zIndex": (element, name, options = undefined) => new IntegerProperty(element, name, options)
 };
+
+// alignContent: string;
+// alignItems: string;
+// alignSelf: string;
+// clear: string;
+// content: string;
+// cursor: string;
+// display: string;
+// float: string;
+// justifyContent: string;
+// justifyItems: string;
+// justifySelf: string;
+// position: string;
+// whiteSpace: string;

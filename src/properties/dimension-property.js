@@ -13,6 +13,8 @@ export default class DimensionProperty extends StringProperty
     _value = undefined;
     _unit = undefined;
 
+    _checkType = (value) => value;
+
     get value()
     {
         return this._value;
@@ -24,16 +26,7 @@ export default class DimensionProperty extends StringProperty
             property = { value: null };
         }
 
-        const type = typeof property;
-
-        if (type === "number")
-        {
-            property = { value: property };
-        }
-        else if (type === "string")
-        {
-            property = DimensionProperty.ParseProperty(property);
-        }
+        property = this._checkType(property);
 
         if (property.value)
         {
@@ -66,6 +59,25 @@ export default class DimensionProperty extends StringProperty
     constructor(element, name, unit = "px", options = undefined)
     {
         super(element, name);
+
+        if (options?.typeCheck)
+        {
+            this._checkType = (value) =>
+            {
+                const type = typeof value;
+
+                if (type === "number")
+                {
+                    value = { value };
+                }
+                else if (type === "string")
+                {
+                    value = DimensionProperty.ParseProperty(value);
+                }
+
+                return value;
+            };
+        }
 
         this._value = null;
         this._unit = unit;

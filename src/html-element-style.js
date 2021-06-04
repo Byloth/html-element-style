@@ -5,7 +5,19 @@ import { PROPERTIES } from "./properties/constants";
 
 export default class HTMLElementStyle
 {
-    static DEFAULT_OPTS = { typeCheck: true };
+    static DEFAULT_OPTS = {
+
+        // Make values assignable to properties in a various different ways...
+        // Automatically parse strings or integers transforming it in the right
+        //  object to assign or raising exceptions when types are invalid.
+        //
+        typeCheck: true,
+
+        // Enables congruity checks on values before assignments
+        //  raising exceptions when values are invalid.
+        //
+        valueCheck: true
+    };
 
     static IsKebabCase(value)
     {

@@ -60,6 +60,9 @@ export default class DimensionProperty extends StringProperty
     {
         super(element, name);
 
+        this._value = null;
+        this._unit = unit;
+
         if (options?.typeCheck)
         {
             this._checkType = (value) =>
@@ -78,9 +81,6 @@ export default class DimensionProperty extends StringProperty
                 return value;
             };
         }
-
-        this._value = null;
-        this._unit = unit;
     }
 
     _setStyle()

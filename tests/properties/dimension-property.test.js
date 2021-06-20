@@ -19,8 +19,8 @@ describe("Property assignment:", () =>
     {
         test.todo("Fail on NaN assignment..."); // style.left = NaN;
         test.todo("Fail on Infinity assignment..."); // style.left = Infinity;
-        test.todo("Fail on invalid string assignment..."); // style.left = "bar";
-        test.todo("Fail on invalid object assignment..."); // style.left = { foo: "bar" };
+        test.todo("Fail on invalid `string` assignment..."); // style.left = "bar";
+        test.todo("Fail on invalid `object` assignment..."); // style.left = { foo: "bar" };
         test.todo("Fail on invalid 'value' object assignment..."); // style.left = { value: "123px" };
         test.todo("Fail on invalid 'unit' object assignment..."); // style.left = { unit: "bar" };
         test.todo("Fail on invalid unit assignment..."); // style.left.unit = "bar";
@@ -79,7 +79,7 @@ describe("Property assignment:", () =>
 
             expect(`${style["padding-right"]}`).toBe("75vh");
         });
-        test("String re-assignment...", () =>
+        test("`string` re-assignment...", () =>
         {
             style["padding-right"] = "10rem";
 
@@ -116,8 +116,8 @@ describe("Property assignment:", () =>
 });
 describe("Value parsing:", () =>
 {
-    test.todo("Valid string..."); // DimensionProperty.ParseProperty("10px");
-    test.todo("Invalid string..."); // DimensionProperty.ParseProperty("10rip");
+    test.todo("Valid `string`..."); // DimensionProperty.ParseProperty("10px");
+    test.todo("Invalid `string`..."); // DimensionProperty.ParseProperty("10rip");
 });
 describe("Value representation:", () =>
 {

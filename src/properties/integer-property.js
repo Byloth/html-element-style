@@ -32,6 +32,8 @@ export default class IntegerProperty extends StringProperty
     {
         super(element, name);
 
+        this._value = null;
+
         if (options?.typeCheck)
         {
             this._checkType = (value) =>
@@ -68,8 +70,6 @@ export default class IntegerProperty extends StringProperty
                 return value;
             };
         }
-
-        this._value = null;
     }
 
     _setStyle()

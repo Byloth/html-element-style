@@ -108,7 +108,15 @@ export default class DimensionProperty extends StringProperty
 
     [Symbol.toPrimitive](hint)
     {
-        if (hint === "string") { return `${this._value}${this._unit}`; }
+        if (hint === "string")
+        {
+            if (this._value)
+            {
+                return `${this._value}${this._unit}`;
+            }
+
+            return "";
+        }
 
         return this._value;
     }

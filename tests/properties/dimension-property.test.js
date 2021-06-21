@@ -8,8 +8,8 @@ const style = new HTMLElementStyle(body);
 describe("Property defaults:", () =>
 {
     test("Default value as `number`...", () => expect(+style.width).toBe(0));
-    test("Default value as `default`...", () => expect(style.width + "").toBe("null"));
-    test("Default value as `string`...", () => expect(`${style.width}`).toBe(""));
+    test("Default value as `default`...", () => expect(style.width + "").toBe("0"));
+    test("Default value as `string`...", () => expect(`${style.width}`).toBe("0px"));
 
     test.todo("Check of `style` attribute value..."); // body.style["padding-top"]; -> undefined / null / 0
 });

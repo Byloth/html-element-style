@@ -32,7 +32,7 @@ export default class IntegerProperty extends StringProperty
     {
         super(element, name);
 
-        this._value = null;
+        this._value = 0;
 
         if (options?.typeCheck)
         {

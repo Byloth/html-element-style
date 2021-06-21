@@ -60,7 +60,7 @@ export default class DimensionProperty extends StringProperty
     {
         super(element, name);
 
-        this._value = null;
+        this._value = 0;
         this._unit = unit;
 
         if (options?.typeCheck)
@@ -110,12 +110,7 @@ export default class DimensionProperty extends StringProperty
     {
         if (hint === "string")
         {
-            if (this._value)
-            {
-                return `${this._value}${this._unit}`;
-            }
-
-            return "";
+            return `${this._value}${this._unit}`;
         }
 
         return this._value;

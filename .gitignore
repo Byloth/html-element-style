@@ -12,14 +12,16 @@ Desktop.ini
 
 # Generated & compiled files
 #
-/build/
 /dist/
-/types/
 /*.tgz
 
 # Downloadable & installable modules & components
 #
 /node_modules/
+
+# Old directories
+#
+*.old/
 
 # Not ignored
 #

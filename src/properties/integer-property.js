@@ -46,7 +46,7 @@ export default class IntegerProperty extends StringProperty
                 }
                 else if (type === "string")
                 {
-                    value = parseInt(value);
+                    value = Number(value);
                 }
                 else
                 {
@@ -86,7 +86,7 @@ export default class IntegerProperty extends StringProperty
 
     refresh()
     {
-        const integer = parseInt(this._element.style[this._name]);
+        const integer = Number(this._element.style[this._name]);
 
         this._value = integer;
     }

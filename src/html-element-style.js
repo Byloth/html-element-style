@@ -61,7 +61,10 @@ export default class HTMLElementStyle
         else
         {
             // eslint-disable-next-line no-console
-            console.warn(`The CSS property named "${property}" doesn't have a initializer specified. Falling back on the default one...`);
+            console.warn(
+                `The CSS property named "${property}" doesn't have a initializer specified. ` +
+                "Falling back on the default one..."
+            );
 
             return StringProperty(element, property);
         }

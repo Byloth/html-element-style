@@ -7,7 +7,7 @@ export default class DimensionProperty extends StringProperty
         const regex = /^([0-9]+(?:\.[0-9]+)?)([cm]m|ch|e[mx]|in|p[ctx]|rem|v[hw]|v(?:max|min)|%)?$/i;
         const matches = value.match(regex);
 
-        return { value: parseFloat(matches[1]), unit: matches[2] };
+        return { value: Number(matches[1]), unit: matches[2] };
     }
 
     _value = undefined;

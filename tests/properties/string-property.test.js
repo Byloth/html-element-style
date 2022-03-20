@@ -19,8 +19,11 @@ describe("Property assignment:", () =>
 {
     describe("Invalid assignment:", () =>
     {
-        test("Fail on invalid `number` assignment...", () => expect(() => (style["align-self"] = 33.333)).toThrow(TypeException));
-        test("Fail on invalid `object` assignment...", () => expect(() => (style.alignSelf = { value: 25 })).toThrow(TypeException));
+        test("Fail on invalid `number` assignment...", () =>
+            expect(() => (style["align-self"] = 33.333)).toThrow(TypeException));
+
+        test("Fail on invalid `object` assignment...", () =>
+            expect(() => (style.alignSelf = { value: 25 })).toThrow(TypeException));
 
         test.todo("Fail on invalid shorthand operation..."); // style.alignSelf *= "bar";
         test.todo("Fail on incrementation..."); // style.alignSelf++;
@@ -43,9 +46,12 @@ describe("Property assignment:", () =>
 });
 describe("Value representation:", () =>
 {
-    style["white-space"] = "nowrap";
+    test("Value as `number`...", () =>
+    {
+        style["white-space"] = "nowrap";
 
-    test("Value as `number`...", () => expect(() => +style.whiteSpace).toThrow(TypeException));
+        expect(() => +style.whiteSpace).toThrow(TypeException);
+    });
     test("Value as `default` (+ `string`)...", () => expect(style.whiteSpace + " value").toBe("nowrap value"));
     test("Value as `default` (+ `number`)...", () => expect(style.whiteSpace + 2021).toBe("nowrap2021"));
     test("Value as `string`...", () => expect(`${style.whiteSpace}`).toBe("nowrap"));

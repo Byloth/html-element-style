@@ -121,9 +121,12 @@ describe("Value parsing:", () =>
 });
 describe("Value representation:", () =>
 {
-    style["margin-top"] = 10;
+    test("Value as `number`...", () =>
+    {
+        style["margin-top"] = 10;
 
-    test("Value as `number`...", () => expect(+style.marginTop).toBe(10));
+        expect(+style.marginTop).toBe(10);
+    });
     test("Value as `default` (+ `string`)...", () => expect(style.marginTop + "cm").toBe("10cm"));
     test("Value as `default` (+ `number`)...", () => expect(style.marginTop + 15).toBe(25));
     test("Value as `string`...", () => expect(`${style.marginTop}`).toBe("10px"));

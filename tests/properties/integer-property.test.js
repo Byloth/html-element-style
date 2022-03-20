@@ -121,9 +121,12 @@ describe("Value parsing:", () =>
 });
 describe("Value representation:", () =>
 {
-    style["z-index"] = 10;
+    test("Value as `number`...", () =>
+    {
+        style["z-index"] = 10;
 
-    test("Value as `number`...", () => expect(+style.zIndex).toBe(10));
+        expect(+style.zIndex).toBe(10);
+    });
     test("Value as `default` (+ `string`)...", () => expect(style.zIndex + "cm").toBe("10cm"));
     test("Value as `default` (+ `number`)...", () => expect(style.zIndex + 15).toBe(25));
     test("Value as `string`...", () => expect(`${style.zIndex}`).toBe("10px"));

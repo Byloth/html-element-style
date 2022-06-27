@@ -23,6 +23,3 @@ Desktop.ini
 /.babelrc
 /.editorconfig
 /.eslintrc.js
-
-/tsconfig.json
-/webpack.config.js
